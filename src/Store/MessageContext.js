@@ -24,7 +24,11 @@ export const MessageContextProvider=({children})=>{
                     ...state,
                     messages:[...action.payload]
                 })
-                
+            case "UPDATE_CURRENT_CONCLAVE":
+                return({
+                    ...state,
+                    currentConclave:action.payload
+                })
         
             default:
                 return state
@@ -32,8 +36,20 @@ export const MessageContextProvider=({children})=>{
     }
 
     const joinConclave=(conclaveId)=>{
+        dispatch({
+            type:"UPDATE_CURRENT_CONCLAVE",
+            payload:conclaveId
+        })
         socket.current.emit("join-conclave",{
             conclaveId:conclaveId,
+            userId:userId
+        })
+    }
+
+    const sendMessage=(content)=>{
+        socket.current.emit("send-message",{
+            conclaveId:state.currentConclave,
+            content:content,
             userId:userId
         })
     }
@@ -52,20 +68,16 @@ export const MessageContextProvider=({children})=>{
         })
     },[socket])
 
-    useEffect(()=>{
-        socket.current.on("user-joined-to-conclave",({name})=>{
-            console.log(name,"has joined the conclave")
-        })
-    },[socket])
-
     const [state,dispatch]=useReducer(messageManipulation,{
-
+        messages:[],
+        currentConclave:null
     })
 
     return(
         <MessageContext.Provider value={{
             joinConclave:joinConclave,
-            messages:state.messages
+            messages:state.messages,
+            sendMessage:sendMessage
         }}>
             {children}
         </MessageContext.Provider>

@@ -8,7 +8,6 @@ import {useAuth} from '../../../Store/AuthContext'
 const MainChatArea=()=>{
     const {messages}=useMessage()
     const {userId}=useAuth()
-    console.log(messages)
     return(
         <div className={classes["chat-area"]}>
             <div className={classes["message-area"]}>

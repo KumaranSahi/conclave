@@ -11,3 +11,43 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+*{
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #FA9141;
+  --secondary: #282c34;
+  --scifi-color:#52d2f7;
+  --text-background:#dd2c00;
+  --text-own-background: #f3f0f0;
+  --reply-background:#d9d8e2;
+  --success:green;
+  --success-mild:#016c5d;
+  --success-bright:limegreen;
+  --failure:red;
+  --failure-mild:salmon;
+  --neutral:gray;
+  --neutral-mild:lightgrey;
+  --white:white;
+  --black:black;
+  --z-index-high:200;
+  --z-index-mid:100;
+  --z-index-low:1;
+}
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #58595a
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #282c34; 
+  border-radius: 2rem;
+}

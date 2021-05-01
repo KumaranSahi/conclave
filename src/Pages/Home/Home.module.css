@@ -1,0 +1,28 @@
+.homepage-container{
+    width: 100%;
+    min-height: calc(100vh - 4.4rem);
+    background-color: var(--secondary);
+}
+
+.homepage-container h1{
+    color: white;
+    font-weight: 400;
+}
+
+.conclave-list{
+    list-style: none;
+    margin-bottom: 0;
+    display: flex;
+}
+
+.active-list{
+    overflow-x: scroll;
+}
+
+.popular-list{
+    flex-wrap: wrap;
+}
+
+.conclave-list li{
+    margin:1rem;
+}

@@ -1,4 +1,3 @@
-import classes from './Drawer.module.css'
 import {SwipeableDrawer} from '@material-ui/core';
 import {ChatStats} from '../../../Components'
 

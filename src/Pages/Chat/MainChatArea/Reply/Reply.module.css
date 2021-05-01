@@ -1,0 +1,73 @@
+.reply-message{
+    display: flex;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.own-reply-message{
+    justify-content: flex-end;
+}
+
+.reply-container{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+.profile-picture{
+    width: 4rem;
+    height: 4rem;
+    margin-right: 0.5rem;
+}
+
+.secondary-message{
+    align-self: center;
+    color: black;
+    background-color: var(--reply-background);
+    padding: 0.5rem;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    margin-left: 4.6rem;
+    border-top: 0.5rem solid var(--text-background);
+    border-right: 0.5rem solid var(--text-background);
+    border-left: 0.5rem solid var(--text-background);
+}
+
+.own-reply{
+    margin-left: 0;
+    width: 100%;
+    border-top: 0.5rem solid var(--text-own-background);
+    border-right: 0.5rem solid var(--text-own-background);
+    border-left: 0.5rem solid var(--text-own-background);
+}
+
+.primary-message{
+    display: flex;
+}
+
+.message-container{
+    background-color: var(--text-background);
+    color: white;
+    padding: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+.own-reply-message .message-container{
+    background-color: var(--text-own-background);
+    color: black;
+}
+
+.sender-name{
+    font-weight: bold;
+    margin-right: 0.5rem;
+    font-size: 1.3rem;
+}
+
+.sent-time{
+    font-style: italic;
+}
+
+.message-text{
+    font-size: 1.1rem;
+}

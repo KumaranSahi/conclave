@@ -1,0 +1,43 @@
+.message-input-area{
+    width:100%;
+    height: 100%;
+    display: flex;
+    background-color: var(--secondary);
+}
+
+.textarea{
+    padding: 0.5rem;
+    border:0px;
+    width: 25rem;
+    height: 10rem;
+    resize: none;
+    font-size: 1rem;
+    background-color: var(--secondary-mild);
+    border:2px solid var(--scifi-color);
+    border-radius: 0.5rem;
+    color: white;
+    flex:4;
+}
+
+.textarea::placeholder{
+    color: white;
+}
+
+.textarea:focus{
+    border: 2px solid var(--black);
+}
+
+.button-solid{
+    color: var(--white);
+    border: 0px;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    font-size: 1rem;
+    flex:1;
+    height: 3rem;
+    align-self: center;
+}
+
+.button-primary{
+    background-color: var(--primary);
+}

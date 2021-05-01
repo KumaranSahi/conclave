@@ -1,0 +1,43 @@
+.message{
+    display: flex;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.own-message{
+    justify-content: flex-end;
+}
+
+.profile-picture{
+    width: 4rem;
+    height: 4rem;
+    margin-right: 0.5rem;
+}
+
+.message-container{
+    width: 100%;
+    background-color: var(--text-background);
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.own-message .message-container{
+    background-color: var(--text-own-background);
+    color: black;
+}
+
+.sender-name{
+    font-weight: bold;
+    margin-right: 0.5rem;
+    font-size: 1.3rem;
+}
+
+.sent-time{
+    font-style: italic;
+}
+
+.message-text{
+    font-size: 1.1rem;
+}
+

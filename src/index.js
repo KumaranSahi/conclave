@@ -5,12 +5,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from 'react-router-dom'
 import {AuthProvider} from './Store/AuthContext'
+import {ConclaveContextProvider} from './Store/ConclaveContext'
+import 'react-toastify/dist/ReactToastify.css'
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <App />
+        <ConclaveContextProvider>
+          <App />
+        </ConclaveContextProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>,

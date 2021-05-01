@@ -4,6 +4,26 @@
     background-color: var(--secondary);
 }
 
+.create-button-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-solid{
+    color: var(--white);
+    border: 0px;
+    margin-top: 1rem;
+    padding: 1rem;
+    font-size: 1.2rem;
+    width:80%;
+    cursor: pointer;
+}
+
+.button-primary{
+    background-color: var(--primary);
+}
+
 .homepage-container h1{
     color: white;
     font-weight: 400;
@@ -13,15 +33,9 @@
     list-style: none;
     margin-bottom: 0;
     display: flex;
-}
-
-.active-list{
-    overflow-x: scroll;
-}
-
-.popular-list{
     flex-wrap: wrap;
 }
+
 
 .conclave-list li{
     margin:1rem;

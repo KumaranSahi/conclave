@@ -1,0 +1,76 @@
+.create-conclave{
+    background-color: var(--secondary);
+    width: 100%;
+    min-height: calc(100vh - 4.4rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.create-conclave-form h1{
+    font-weight: 300;
+    color: white;
+}
+
+.create-conclave-form{
+    width: 100%;
+    min-height: 30rem;
+    box-shadow: -8px 4px 16px 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.textbox{
+    padding: 0.5rem;
+    width: 80%;
+    color:white;
+    font-size: 1rem;
+    background-color: var(--secondary-mild);
+    border:2px solid var(--scifi-color);
+    border-radius: 0.5rem;
+    margin-bottom:1rem;
+}
+
+.textbox:focus{
+    border: 2px solid var(--black);
+}
+
+.textarea{
+    padding: 0.5rem;
+    border:0px;
+    width: 80%;
+    height: 10rem;
+    resize: none;
+    resize: none;
+    font-size: 1rem;
+    background-color: var(--secondary-mild);
+    border:2px solid var(--scifi-color);
+    border-radius: 0.5rem;
+    color: white;
+    margin-bottom:1rem;
+}
+
+
+.textarea::placeholder, .textbox::placeholder{
+    color: white;
+}
+
+.button-solid{
+    color: var(--white);
+    width: 80%;
+    border: 0px;
+    margin: 1rem;
+    padding: 1rem;
+    font-size: 1.1rem;
+}
+
+.button-primary{
+    background-color: var(--primary);
+}
+
+@media (min-width:700px){
+    .create-conclave-form{
+        width: 70%;
+    }
+}

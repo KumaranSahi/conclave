@@ -122,27 +122,23 @@ export const AuthProvider=({children})=>{
 
     const onReload=()=>{
         const token=localStorage.getItem('token');
-        if(!token){
+        const expiresIn=new Date(localStorage.getItem('expiresIn'));
+        if(expiresIn<=new Date()){
             signOutUser()
-        }else{
-            const expiresIn=new Date(localStorage.getItem('expiresIn'));
-            if(expiresIn<=new Date()){
-                signOutUser()
-            }
-            else{
-                const userId=localStorage.getItem('userId');
-                const userName=localStorage.getItem('userName')
-                checkAuthTimeout((expiresIn.getTime()-new Date().getTime())/1000)
-                dispatch({
-                    type:"SIGNIN_USER",
-                    payload:{
-                        userId:userId,
-                        token:token,
-                        userName:userName,
-                        expiresIn:expiresIn
-                    }
-                })
-            }
+        }
+        else{
+            const userId=localStorage.getItem('userId');
+            const userName=localStorage.getItem('userName')
+            checkAuthTimeout((expiresIn.getTime()-new Date().getTime())/1000)
+            dispatch({
+                type:"SIGNIN_USER",
+                payload:{
+                    userId:userId,
+                    token:token,
+                    userName:userName,
+                    expiresIn:expiresIn
+                }
+            })
         }
     }
 

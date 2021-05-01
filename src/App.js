@@ -1,12 +1,15 @@
 import './App.css';
 import {NavBar} from './Components'
-import {Switch,Route,Redirect} from 'react-router-dom'
+import {Switch,Route,Redirect,useLocation} from 'react-router-dom'
 import SignUp from './Pages/SignUp/SignUp'
 import Chat from './Pages/Chat/Chat'
 import Home from './Pages/Home/Home'
 import {ToastContainer} from 'react-toastify'
 import {useAuth} from './Store/AuthContext'
 import Spinner from './UI/Spinner/Spinner'
+import CreateConcalve from './Pages/CreateConclave/CreateConclave'
+import {useConclave} from './Store/ConclaveContext'
+import {useEffect} from 'react'
 
 const PrivateLink=({...props})=>{
   const {token}=useAuth()
@@ -24,6 +27,12 @@ const LockLogin=({...props})=>{
 
 function App() {
   const {authLoading}=useAuth()
+  const {conclaveLoading}=useConclave()
+  const { pathname } = useLocation();
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
   return (
     <div className="App">
       <header>
@@ -33,11 +42,12 @@ function App() {
         <Switch>
           <LockLogin path="/sign-up" component={SignUp}/>
           <PrivateLink path="/chat" component={Chat}/>
-          <Route path="/" component={Home}/>
+          <PrivateLink path="/create-conclave" component={CreateConcalve}/>
+          <PrivateLink path="/" component={Home}/>
         </Switch>
       </main>
       <ToastContainer/>
-      {(authLoading)&&<Spinner/>}
+      {(authLoading||conclaveLoading)&&<Spinner/>}
     </div>
   );
 }

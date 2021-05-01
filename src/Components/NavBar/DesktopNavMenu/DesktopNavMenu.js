@@ -15,8 +15,8 @@ const DesktopNavMenu=()=>{
                     </NavLink>
                 </p>
                 <p className={classes["nav-button"]}>
-                    <NavLink to="/profile" activeClassName={classes["active-desktop"]}>
-                        Profile
+                    <NavLink to="/bookmarked-conclavess" activeClassName={classes["active-desktop"]}>
+                        Bookmarked Conclaves
                     </NavLink>
                 </p>
             </div>

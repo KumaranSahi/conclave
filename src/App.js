@@ -26,12 +26,13 @@ const LockLogin=({...props})=>{
 }
 
 function App() {
-  const {authLoading}=useAuth()
+  const {authLoading,token}=useAuth()
   const {conclaveLoading}=useConclave()
   const { pathname } = useLocation();
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [pathname]);
+
+  useEffect(() => {
+      window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
     <div className="App">
@@ -43,7 +44,7 @@ function App() {
           <LockLogin path="/sign-up" component={SignUp}/>
           <PrivateLink path="/chat" component={Chat}/>
           <PrivateLink path="/create-conclave" component={CreateConcalve}/>
-          <PrivateLink path="/" component={Home}/>
+          {token?<PrivateLink path="/" component={Home}/>:<Route path="/" component={SignUp}/>}
         </Switch>
       </main>
       <ToastContainer/>

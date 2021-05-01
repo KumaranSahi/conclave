@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from 'react-router-dom'
 import {AuthProvider} from './Store/AuthContext'
 import {ConclaveContextProvider} from './Store/ConclaveContext'
+import {MessageContextProvider} from './Store/MessageContext'
 import 'react-toastify/dist/ReactToastify.css'
 
 ReactDOM.render(
@@ -13,7 +14,9 @@ ReactDOM.render(
     <BrowserRouter>
       <AuthProvider>
         <ConclaveContextProvider>
-          <App />
+          <MessageContextProvider>
+            <App />
+          </MessageContextProvider>
         </ConclaveContextProvider>
       </AuthProvider>
     </BrowserRouter>

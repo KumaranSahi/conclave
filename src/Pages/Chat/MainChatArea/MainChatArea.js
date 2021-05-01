@@ -1,21 +1,28 @@
 import classes from './MainChatArea.module.css'
 import Message from './Message/Message'
 import MessageInputArea from './MessageInputArea/MessageInputArea'
-import Reply from './Reply/Reply'
+// import Reply from './Reply/Reply'
+import {useMessage} from '../../../Store/MessageContext'
+import {useAuth} from '../../../Store/AuthContext'
 
 const MainChatArea=()=>{
+    const {messages}=useMessage()
+    const {userId}=useAuth()
+    console.log(messages)
     return(
         <div className={classes["chat-area"]}>
             <div className={classes["message-area"]}>
-                <Message/>
-                <Message/>
-                <Reply/>
-                <Message/>
-                <Message/>
-                <Message/>
-                <Reply own/>
-                <Message/>
-                <Message/>
+                {
+                    messages?.map(({_id,by:{_id:id,name},content,createdAt})=>(
+                        <Message
+                            key={_id}
+                            name={name}
+                            own={id==userId}
+                            content={content}
+                            createdAt={createdAt}
+                        />
+                    ))
+                }
             </div>
             <div className={classes["textbox"]}>
                 <MessageInputArea/>

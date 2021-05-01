@@ -6,7 +6,6 @@ import {useAuth} from '../../Store/AuthContext'
 
 const SignUp=()=>{
 
-    console.log(useAuth())
     const {signUpUser,signInUser,currentPage,setCurrentPage,changePassword}=useAuth()
     
     const [userName,setUserName]=useState("")

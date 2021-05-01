@@ -1,0 +1,52 @@
+.chat-stats{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.options-div{
+    width: 100%;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chat-stats hr{
+    width: 100%;
+}
+
+.button-solid{
+    color: var(--white);
+    outline: none;
+    border: 0px;
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+.button-success{
+    background-color: var(--success-mild);
+}
+
+.button-failure{
+    background-color: var(--failure);
+}
+
+.users-in-conclave{
+    width: 100%;
+    padding:0.5rem;
+    list-style: none;
+    overflow-y: scroll;
+    height: 10rem;
+}
+
+.chat-stats h2,.chat-stats h3{
+    margin: 0;
+    color: white;
+    font-weight: 300;
+    margin-block-start: 0;
+    margin-block-end: 0;
+}

@@ -1,5 +1,6 @@
 .MuiDrawer-paper{
-    width: 15rem;
+    width: 23rem;
+    background: var(--secondary) !important;
 }
 
 .main-container{

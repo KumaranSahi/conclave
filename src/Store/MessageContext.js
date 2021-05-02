@@ -2,6 +2,7 @@ import {useContext,createContext,useRef,useEffect} from 'react';
 import {io} from 'socket.io-client'
 import { warningToast } from '../UI/Toast/Toast';
 import {useAuth} from './AuthContext'
+import {useConclave} from './ConclaveContext'
 import {useHistory} from 'react-router-dom'
 import { useReducer } from 'react';
 
@@ -11,6 +12,7 @@ export const useMessage=()=>useContext(MessageContext)
 
 export const MessageContextProvider=({children})=>{
     const {userId}=useAuth()
+    const {conclaves}=useConclave()
     const {push}=useHistory()
 
     const socket=useRef(io("ws://localhost:8080",{
@@ -22,7 +24,13 @@ export const MessageContextProvider=({children})=>{
             case "ADD_MESSAGES_ACTION":
                 return({
                     ...state,
-                    messages:[...action.payload]
+                    messages:[...action.payload.messages],
+                    users:[...action.payload.users]
+                })
+            case "REMOVE_USER":
+                return({
+                    ...state,
+                    users:[...action.payload]
                 })
             case "UPDATE_CURRENT_CONCLAVE":
                 return({
@@ -51,9 +59,10 @@ export const MessageContextProvider=({children})=>{
     }
 
     const joinConclave=(conclaveId)=>{
+        const conclave=conclaves.filter(({_id})=>_id==conclaveId)[0]
         dispatch({
             type:"UPDATE_CURRENT_CONCLAVE",
-            payload:conclaveId
+            payload:conclave
         })
         socket.current.emit("join-conclave",{
             conclaveId:conclaveId,
@@ -63,7 +72,7 @@ export const MessageContextProvider=({children})=>{
 
     const sendMessage=(content)=>{
         socket.current.emit("send-message",{
-            conclaveId:state.currentConclave,
+            conclaveId:state.currentConclave._id,
             content:content,
             userId:userId
         })
@@ -71,7 +80,7 @@ export const MessageContextProvider=({children})=>{
 
     const sendReply=(content)=>{
         socket.current.emit("send-reply",{
-            conclaveId:state.currentConclave,
+            conclaveId:state.currentConclave._id,
             content:content,
             replyId:state.replyMessage,
             userId:userId
@@ -91,15 +100,25 @@ export const MessageContextProvider=({children})=>{
     }
 
     useEffect(()=>{
-        socket.current.on("room-joined",({ok,messages})=>{
-            console.log(messages)
+        socket.current.on("room-joined",({ok,messages,users})=>{
             if(!ok){
                 warningToast("Failed to join room")
                 push("/")
             }else{
                 dispatch({
                     type:"ADD_MESSAGES_ACTION",
-                    payload:[...messages]
+                    payload:{messages:[...messages],users:[...users]}
+                })
+            }
+        })
+    },[socket])
+
+    useEffect(()=>{
+        socket.current.on("user-left",({ok,users})=>{
+            if(ok){
+                dispatch({
+                    type:"REMOVE_USER",
+                    payload:[...users]
                 })
             }
         })
@@ -107,6 +126,7 @@ export const MessageContextProvider=({children})=>{
 
     const [state,dispatch]=useReducer(messageManipulation,{
         messages:[],
+        users:[],
         currentConclave:null,
         replyMessage:null
     })
@@ -115,10 +135,12 @@ export const MessageContextProvider=({children})=>{
         <MessageContext.Provider value={{
             joinConclave:joinConclave,
             messages:state.messages,
+            users:state.users,
             sendMessage:sendMessage,
             dispatch:dispatch,
             replyMessage:state.replyMessage,
             sendReply:sendReply,
+            currentConclave:state.currentConclave,
             leaveConclave:leaveConclave
         }}>
             {children}

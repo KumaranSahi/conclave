@@ -32,9 +32,8 @@ const MainChatArea=()=>{
                         />
                     )     
                     :(
-                        <div ref={scrollRef}>
+                        <div ref={scrollRef} key={_id}>
                             <Message
-                                key={_id}
                                 id={_id}
                                 name={name}
                                 own={id==userId}

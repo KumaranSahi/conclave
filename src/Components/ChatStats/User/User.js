@@ -1,8 +1,7 @@
 import classes from './User.module.css'
 import JaneDoe from '../../../Assets/Jane Doe.jpg'
-import {LongMenu} from '../../'
 
-const Users=()=>{
+const Users=({name})=>{
     return(
         <div className={classes["user-container"]}>
             <div className={classes["user"]}>
@@ -12,10 +11,9 @@ const Users=()=>{
                     className={classes["profile-image"]}
                 />
                 <p className={classes["user-name"]}>
-                    Jane Doe
+                    {name}
                 </p>
             </div>
-            <LongMenu options={["Kickout"]}/>
         </div>
     )
 }

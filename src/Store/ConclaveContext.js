@@ -62,6 +62,7 @@ export const ConclaveContextProvider=({children})=>{
     }
 
     const loadBookmarkedConclaves=async ()=>{
+        setLoading(true)
         try{
             if(token){
                 const {data:{data,ok}}=await axios.get(`/api/conclaves/${userId}/bookmarks`,config);
@@ -71,9 +72,11 @@ export const ConclaveContextProvider=({children})=>{
                         payload:[...data]
                     }) 
             }
+            setLoading(false) 
         }catch(error){
             console.log(error)
             warningToast("Failed to load Conclaves")
+            setLoading(false)
         }
     }
 

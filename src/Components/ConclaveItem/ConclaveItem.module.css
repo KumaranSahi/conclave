@@ -44,3 +44,7 @@
 .button-primary{
     background-color: var(--primary);
 }
+
+.button-failure{
+    background-color: var(--failure);
+}

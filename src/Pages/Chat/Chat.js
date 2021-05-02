@@ -8,10 +8,13 @@ import {useConclave} from '../../Store/ConclaveContext'
 
 const Chat=()=>{
     const {search}=useLocation()
-    const {conclaves}=useConclave()
+    const {conclaves,userCreatedConclaves,bookmarkedConclaves}=useConclave()
     const {joinConclave,leaveConclave}=useMessage()                                     
 
-    const conclave=conclaves?.filter(({_id})=>_id.toString()===search.substring(1))[0]
+    let conclave=conclaves?.filter(({_id})=>_id.toString()===search.substring(1))[0]
+    conclave=conclave ? null: userCreatedConclaves?.filter(({_id})=>_id.toString()===search.substring(1))[0] 
+    conclave=conclave ? null: bookmarkedConclaves?.filter(({_id})=>_id.toString()===search.substring(1))[0] 
+
 
     useEffect(()=>{ 
         search && joinConclave(conclave)

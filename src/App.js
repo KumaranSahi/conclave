@@ -1,13 +1,18 @@
-import './App.css';
 import {NavBar} from './Components'
+
 import {Switch,Route,Redirect,useLocation} from 'react-router-dom'
+
 import SignUp from './Pages/SignUp/SignUp'
 import Chat from './Pages/Chat/Chat'
 import Home from './Pages/Home/Home'
-import {ToastContainer} from 'react-toastify'
-import {useAuth} from './Store/AuthContext'
-import Spinner from './UI/Spinner/Spinner'
 import CreateConcalve from './Pages/CreateConclave/CreateConclave'
+import BookmarkedConclaves from './Pages/BookmarkedConclaves/BookmarkedConclaves'
+import MyConclaves from './Pages/MyConclaves/MyConclaves'
+
+import Spinner from './UI/Spinner/Spinner'
+import {ToastContainer} from 'react-toastify'
+
+import {useAuth} from './Store/AuthContext'
 import {useConclave} from './Store/ConclaveContext'
 import {useEffect} from 'react'
 import {useMessage} from './Store/MessageContext'
@@ -46,6 +51,8 @@ function App() {
           <LockLogin path="/sign-up" component={SignUp}/>
           <PrivateLink path="/chat" component={Chat}/>
           <PrivateLink path="/create-conclave" component={CreateConcalve}/>
+          <PrivateLink path="/bookmarked-conclaves" component={BookmarkedConclaves}/>
+          <PrivateLink path="/my-conclaves" component={MyConclaves}/>
           {token?<PrivateLink path="/" component={Home}/>:<Route path="/" component={SignUp}/>}
         </Switch>
       </main>

@@ -1,0 +1,42 @@
+.bookmarked-container{
+    width: 100%;
+    min-height: calc(100vh - 4.4rem);
+    background-color: var(--secondary);
+}
+
+.create-button-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-solid{
+    color: var(--white);
+    border: 0px;
+    margin-top: 1rem;
+    padding: 1rem;
+    font-size: 1.2rem;
+    width:80%;
+    cursor: pointer;
+}
+
+.button-primary{
+    background-color: var(--primary);
+}
+
+.bookmarked-container h1{
+    color: white;
+    font-weight: 400;
+}
+
+.conclave-list{
+    list-style: none;
+    margin-bottom: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+.conclave-list li{
+    margin:1rem;
+}

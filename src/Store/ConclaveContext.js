@@ -24,6 +24,16 @@ export const ConclaveContextProvider=({children})=>{
                     ...state,
                     conclaves:[...action.payload]
                 })
+            case "LOAD_USERCREATED_CONCLAVES":
+                return({
+                    ...state,
+                    userCreatedConclaves:[...action.payload]
+                })
+            case "LOAD_BOOKMARKED_CONCLAVES":
+                return({
+                    ...state,
+                    bookmarkedConclaves:[...action.payload]
+                })
             default:
                 return state;
         }
@@ -36,7 +46,7 @@ export const ConclaveContextProvider=({children})=>{
                 const {data:{data,ok}}=await axios.get(`/api/conclaves/${userId}`,config);
                 if(ok)
                     dispatch ({
-                        type:"LOAD_CONCLAVE_LIST",
+                        type:"LOAD_USERCREATED_CONCLAVES",
                         payload:[...data]
                     })
             }
@@ -45,6 +55,22 @@ export const ConclaveContextProvider=({children})=>{
             console.log(error)
             warningToast("Failed to load Conclaves")
             setLoading(false)
+        }
+    }
+
+    const loadBookmarkedConclaves=async ()=>{
+        try{
+            if(token){
+                const {data:{data,ok}}=await axios.get(`/api/conclaves/${userId}/bookmarks`,config);
+                if(ok)
+                    dispatch ({
+                        type:"LOAD_BOOKMARKED_CONCLAVES",
+                        payload:[...data]
+                    }) 
+            }
+        }catch(error){
+            console.log(error)
+            warningToast("Failed to load Conclaves")
         }
     }
 
@@ -92,7 +118,8 @@ export const ConclaveContextProvider=({children})=>{
 
     const [state,dispatch]=useReducer(conclaveManipulation,{
         conclaves:[],
-        userCreatedConclaves:[]
+        userCreatedConclaves:[],
+        bookmarkedConclaves:[]
     })
     return(
         <ConclaveContext.Provider
@@ -104,6 +131,8 @@ export const ConclaveContextProvider=({children})=>{
                 userCreatedConclaves:state.userCreatedConclaves,
                 loadUserCreatedConclaves:loadUserCreatedConclaves,
                 createConclave:createConclave,
+                bookmarkedConclaves:state.bookmarkedConclaves,
+                loadBookmarkedConclaves:loadBookmarkedConclaves,
                 dispatch:dispatch
             }}
         >

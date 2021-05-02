@@ -76,7 +76,9 @@ export const ChatStats=()=>{
                 <h2>
                     {currentConclave?.name}
                 </h2>
-                {userId!==currentConclave?.admin&&<LongMenu options={["Add Bookmark"]} changed={()=>addBookmark()}/>}
+                {userId!==currentConclave?.admin?<LongMenu options={["Add Bookmark"]} changed={()=>addBookmark()}/>:
+                    <LongMenu options={currentConclave.visibility==="PUBLIC"?["Make Private"]:["Make Public"]} changed={visiblityClicked}/>
+                }
             </div>
         </div>
     )

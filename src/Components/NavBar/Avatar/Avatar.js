@@ -4,9 +4,12 @@ import {useAuth} from '../../../Store/AuthContext'
 import profileImage from '../../../Assets/default.png'
 import {Link,useLocation} from 'react-router-dom'
 import {Menu,MenuItem} from '@material-ui/core'
+import {useHistory} from 'react-router-dom'
 
 const Avatar=()=>{
     const {userName,signOutUser,userImage}=useAuth()
+
+    const {push}=useHistory()
 
     const [openDropdown,setOpenDropdown]=useState(null)
 
@@ -40,6 +43,14 @@ const Avatar=()=>{
                         onClose={handleClose}
                     >
                         <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                        <MenuItem onClick={()=>{
+                            push("/my-conclaves")
+                            handleClose()
+                        }}>My Conclaves</MenuItem>
+                        <MenuItem onClick={()=>{
+                            push("/bookmarked-conclaves")
+                            handleClose()
+                        }}>Bookmarked Conclaves</MenuItem>
                     </Menu>
                 </div>
             </div>

@@ -4,6 +4,17 @@
 > Team Member: Muthu Kumaran (@KumaranSahi)\
 > App name : Conclave
 
+# Features
+- Room creation
+- Room Moderation
+   * Raise Hands
+   * Muting
+- Reply to specific texts
+- Emoji support
+- Bookmarking rooms
+- Image upload
+- JWT authentication
+
 # Technologies used
 ### Frontend(Deployed on Netlify)
 - ReactJS

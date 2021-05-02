@@ -41,3 +41,7 @@
 .button-primary{
     background-color: var(--primary);
 }
+
+.button-warning{
+    background-color: var(--warning);
+}

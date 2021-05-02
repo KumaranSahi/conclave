@@ -29,7 +29,17 @@ export const MessageContextProvider=({children})=>{
                     ...state,
                     currentConclave:action.payload
                 })
-        
+            case "ADD_REPLY_MESSAGE":
+                return({
+                    ...state,
+                    replyMessage:action.payload
+                })
+            case "REMOVE_REPLY_MESSAGE":
+                return({
+                    ...state,
+                    replyMessage:null
+                })    
+            
             default:
                 return state
         }
@@ -54,8 +64,21 @@ export const MessageContextProvider=({children})=>{
         })
     }
 
+    const sendReply=(content)=>{
+        socket.current.emit("send-reply",{
+            conclaveId:state.currentConclave,
+            content:content,
+            replyId:state.replyMessage,
+            userId:userId
+        })
+        dispatch({
+            type:"REMOVE_REPLY_MESSAGE"
+        })
+    }
+
     useEffect(()=>{
         socket.current.on("room-joined",({ok,messages})=>{
+            console.log(messages)
             if(!ok){
                 warningToast("Failed to join room")
                 push("/")
@@ -70,14 +93,18 @@ export const MessageContextProvider=({children})=>{
 
     const [state,dispatch]=useReducer(messageManipulation,{
         messages:[],
-        currentConclave:null
+        currentConclave:null,
+        replyMessage:null
     })
 
     return(
         <MessageContext.Provider value={{
             joinConclave:joinConclave,
             messages:state.messages,
-            sendMessage:sendMessage
+            sendMessage:sendMessage,
+            dispatch:dispatch,
+            replyMessage:state.replyMessage,
+            sendReply:sendReply
         }}>
             {children}
         </MessageContext.Provider>

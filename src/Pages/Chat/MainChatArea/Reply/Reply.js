@@ -1,17 +1,18 @@
 import classes from './Reply.module.css'
 import janeDoe from '../../../../Assets/Jane Doe.jpg'
+import {format} from 'timeago.js'
 
-const Reply=({own,secondaryMessage,primaryMessage,replierName,senderName})=>{
+const Reply=({id,primaryMessageUserName,own,primaryMessagecontent,primaryMessageCreatedAt,secondaryMessageContent,secondaryMessageCreatedAt,secondaryMessageUserName})=>{
     return(
         <div className={own?`${classes["reply-message"]} ${classes["own-reply-message"]}`:classes["reply-message"]}>
             <div className={classes["reply-container"]}>
                 <div className={own?`${classes["secondary-message"]} ${classes["own-reply"]}`:classes["secondary-message"]}>
                     <div>
-                    <span className={classes["sender-name"]}>{replierName}</span>
-                    <span className={classes["sent-time"]}>(1 hour ago)</span> 
+                    <span className={classes["sender-name"]}>{secondaryMessageUserName}</span>
+                    <span className={classes["sent-time"]}>{format(secondaryMessageCreatedAt)}</span> 
                     </div>
                     <p className={classes["message-text"]}>
-                        {secondaryMessage}
+                        {secondaryMessageContent}
                     </p>
                 </div>
                 <div className={classes["primary-message"]}>
@@ -22,11 +23,11 @@ const Reply=({own,secondaryMessage,primaryMessage,replierName,senderName})=>{
                     />}
                     <div className={classes["message-container"]}>
                         <div>
-                            <span className={classes["sender-name"]}>{senderName}</span>
-                            <span className={classes["sent-time"]}>(1 hour ago)</span> 
+                            <span className={classes["sender-name"]}>{primaryMessageUserName}</span>
+                            <span className={classes["sent-time"]}>{format(primaryMessageCreatedAt)}</span> 
                         </div>
                         <p className={classes["message-text"]}>
-                            {primaryMessage}
+                            {primaryMessagecontent}
                         </p>
                     </div>
                 </div>

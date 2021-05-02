@@ -1,6 +1,6 @@
 import {useContext,createContext,useRef,useEffect} from 'react';
 import {io} from 'socket.io-client'
-import { warningToast } from '../UI/Toast/Toast';
+import { infoToast, successToast, warningToast } from '../UI/Toast/Toast';
 import {useAuth} from './AuthContext'
 import {useConclave} from './ConclaveContext'
 import {useHistory} from 'react-router-dom'
@@ -52,14 +52,23 @@ export const MessageContextProvider=({children})=>{
                     ...state,
                     replyMessage:null
                 })    
-            
+            case "ADD_TO_USERHANDRAISED":
+                return({
+                    ...state,
+                    raisedHandUsers:[...action.payload]
+                })
+            case "SET_ALLOW_TALKING":
+                return({
+                    ...state,
+                    allowTalking:action.payload
+                })
             default:
                 return state
         }
     }
 
     const joinConclave=(conclaveId)=>{
-        const conclave=conclaves.filter(({_id})=>_id==conclaveId)[0]
+        const conclave=conclaves.filter(({_id})=>_id===conclaveId)[0]
         dispatch({
             type:"UPDATE_CURRENT_CONCLAVE",
             payload:conclave
@@ -99,6 +108,36 @@ export const MessageContextProvider=({children})=>{
         })
     }
 
+    const raiseHand=()=>{
+        socket.current.emit("raise-hand",{
+            userId:userId,
+            conclaveAdminId:state.currentConclave.admin
+        })
+    }
+
+    const raisedHandResponse=(userId,response)=>{
+        if(response==="ACCEPT"){
+            socket.current.emit("accept-raised-hand",{
+                userId:userId
+            })
+        }else{
+            socket.current.emit("reject-raised-hand",{
+                userId:userId
+            })
+        }
+        dispatch({
+            type:"ADD_TO_USERHANDRAISED",
+            payload:state.raisedHandUsers.filter(({_id})=>_id!==userId)
+        })
+    }
+
+    const lowerHand=()=>{
+        dispatch({
+            type:"SET_ALLOW_TALKING",
+            payload:false
+        })
+    }
+
     useEffect(()=>{
         socket.current.on("room-joined",({ok,messages,users})=>{
             if(!ok){
@@ -124,12 +163,60 @@ export const MessageContextProvider=({children})=>{
         })
     },[socket])
 
+    useEffect(()=>{
+        socket.current.on("user-raised-hand",({ok,user})=>{
+            if(ok){
+                dispatch({
+                    type:"ADD_TO_USERHANDRAISED",
+                    payload:[user]
+                })
+            }
+        })
+    },[socket])
+
+    useEffect(()=>{
+        socket.current.on("admin-unavailable",()=>{
+            infoToast("Seems like the admin is unavailable")
+        })
+    },[socket])
+
+    useEffect(()=>{
+        socket.current.on("raised-hand-accepted",()=>{
+            successToast("You can talk now")
+            dispatch({
+                type:"SET_ALLOW_TALKING",
+                payload:true
+            })
+        })
+    },[socket])
+
+    useEffect(()=>{
+        socket.current.on("raised-hand-rejected",()=>{
+            warningToast("Admin has rejected your request")
+            dispatch({
+                type:"SET_ALLOW_TALKING",
+                payload:false
+            })
+        })
+    },[socket])
+
     const [state,dispatch]=useReducer(messageManipulation,{
         messages:[],
         users:[],
+        raisedHandUsers:[],
         currentConclave:null,
-        replyMessage:null
+        replyMessage:null,
+        allowTalking:false
     })
+
+    useEffect(()=>{
+        if(state.currentConclave?.admin===userId){
+            dispatch({
+                type:"SET_ALLOW_TALKING",
+                payload:true
+            })
+        }
+    },[state.currentConclave])
 
     return(
         <MessageContext.Provider value={{
@@ -141,7 +228,12 @@ export const MessageContextProvider=({children})=>{
             replyMessage:state.replyMessage,
             sendReply:sendReply,
             currentConclave:state.currentConclave,
-            leaveConclave:leaveConclave
+            leaveConclave:leaveConclave,
+            raiseHand:raiseHand,
+            raisedHandUsers:state.raisedHandUsers,
+            raisedHandResponse:raisedHandResponse,
+            allowTalking:state.allowTalking,
+            lowerHand:lowerHand
         }}>
             {children}
         </MessageContext.Provider>

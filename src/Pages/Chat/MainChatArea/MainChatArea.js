@@ -4,10 +4,10 @@ import MessageInputArea from './MessageInputArea/MessageInputArea'
 import Reply from './Reply/Reply'
 import {useMessage} from '../../../Store/MessageContext'
 import {useAuth} from '../../../Store/AuthContext'
-import {useRef,createRef, useEffect} from 'react'
+import {createRef, useEffect} from 'react'
 
 const MainChatArea=()=>{
-    const {messages}=useMessage()
+    const {messages,allowTalking}=useMessage()
     const {userId}=useAuth()
     const scrollRef=createRef()
     useEffect(()=>{
@@ -23,7 +23,7 @@ const MainChatArea=()=>{
                             key={_id}
                             id={_id}
                             primaryMessageUserName={name}
-                            own={id==userId}
+                            own={id===userId}
                             primaryMessagecontent={content}
                             primaryMessageCreatedAt={createdAt}
                             secondaryMessageContent={responseOf.content}
@@ -44,9 +44,10 @@ const MainChatArea=()=>{
                     ))
                 }
             </div>
+            {allowTalking&&
             <div className={classes["textbox"]}>
                 <MessageInputArea/>
-            </div>
+            </div>}
         </div>
     )
 }

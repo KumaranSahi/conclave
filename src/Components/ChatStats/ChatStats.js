@@ -6,20 +6,25 @@ import {useMessage} from '../../Store/MessageContext'
 import {useAuth} from '../../Store/AuthContext'
 
 export const ChatStats=()=>{
-    const {users,currentConclave}=useMessage()
+    const {users,currentConclave,raiseHand,raisedHandUsers,allowTalking,lowerHand}=useMessage()
     const {userId}=useAuth()
+
     return(
         <div className={classes["chat-stats"]}>
             <div className={classes["options-div"]}>
                 <h2>
                     {currentConclave?.name}
                 </h2>
-                {userId!=currentConclave?.admin&&<LongMenu options={["bookmark"]}/>}
+                {userId!==currentConclave?.admin&&<LongMenu options={["bookmark"]}/>}
             </div>
-            {userId!=currentConclave?.admin?<div className={classes["options-div"]}>
-                <button className={`${classes["button-solid"]} ${classes["button-success"]}`}>
+            {userId!==currentConclave?.admin?<div className={classes["options-div"]}>
+                {allowTalking?
+                (<button className={`${classes["button-solid"]} ${classes["button-failure"]}`} onClick={()=>lowerHand()}>
+                    Lower Hand
+                </button>)
+                :(<button className={`${classes["button-solid"]} ${classes["button-success"]}`} onClick={()=>raiseHand()}>
                     Raise Hand
-                </button>
+                </button>)}
             </div>:
             <div className={classes["options-div"]}>
                 <button className={`${classes["button-solid"]} ${classes["button-failure"]}`}>
@@ -27,19 +32,22 @@ export const ChatStats=()=>{
                 </button>
                 <LongMenu options={["Make Public"]}/>
             </div>}
-            {userId==currentConclave?.admin&&(<>
+            {userId===currentConclave?.admin&&(<>
                 <hr/>
                 <h3>
                     Accept Users
                 </h3>
                 <ul className={classes["users-in-conclave"]}>
-                    <li>
-                        <UserRaisedHand/>
-                        <UserRaisedHand/>
-                        <UserRaisedHand/>
-                        <UserRaisedHand/>
-                        <UserRaisedHand/>
-                    </li>
+                    {
+                        raisedHandUsers.map(({name,_id})=>(
+                            <li key={_id}>
+                                <UserRaisedHand
+                                    name={name}
+                                    id={_id}
+                                />
+                            </li>
+                        ))
+                    }
                 </ul>
             </>)}
             <hr/>

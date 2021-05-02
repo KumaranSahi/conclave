@@ -6,7 +6,8 @@ import {useMessage} from '../../Store/MessageContext'
 import {useAuth} from '../../Store/AuthContext'
 
 export const ChatStats=()=>{
-    const {users,currentConclave,raiseHand,raisedHandUsers,allowTalking,lowerHand,closeConclave,changeVisibility}=useMessage()
+    const {users,currentConclave,raiseHand,raisedHandUsers,
+        allowTalking,lowerHand,closeConclave,changeVisibility,addBookmark}=useMessage()
     const {userId}=useAuth()
 
     const visiblityClicked=()=>{
@@ -19,7 +20,7 @@ export const ChatStats=()=>{
                 <h2>
                     {currentConclave?.name}
                 </h2>
-                {userId!==currentConclave?.admin&&<LongMenu options={["bookmark"]}/>}
+                {userId!==currentConclave?.admin&&<LongMenu options={["Add Bookmark"]} changed={()=>addBookmark()}/>}
             </div>
             {userId!==currentConclave?.admin?<div className={classes["options-div"]}>
                 {allowTalking?
@@ -75,7 +76,7 @@ export const ChatStats=()=>{
                 <h2>
                     {currentConclave?.name}
                 </h2>
-                {userId!==currentConclave?.admin&&<LongMenu options={["bookmark"]}/>}
+                {userId!==currentConclave?.admin&&<LongMenu options={["Add Bookmark"]} changed={()=>addBookmark()}/>}
             </div>
         </div>
     )

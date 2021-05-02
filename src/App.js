@@ -10,6 +10,7 @@ import Spinner from './UI/Spinner/Spinner'
 import CreateConcalve from './Pages/CreateConclave/CreateConclave'
 import {useConclave} from './Store/ConclaveContext'
 import {useEffect} from 'react'
+import {useMessage} from './Store/MessageContext'
 
 const PrivateLink=({...props})=>{
   const {token}=useAuth()
@@ -29,6 +30,7 @@ function App() {
   const {authLoading,token}=useAuth()
   const {conclaveLoading}=useConclave()
   const { pathname } = useLocation();
+  const {messageLoading}=useMessage()
 
   useEffect(() => {
       window.scrollTo(0, 0);
@@ -48,7 +50,7 @@ function App() {
         </Switch>
       </main>
       <ToastContainer/>
-      {(authLoading||conclaveLoading)&&<Spinner/>}
+      {(authLoading||conclaveLoading||messageLoading)&&<Spinner/>}
     </div>
   );
 }

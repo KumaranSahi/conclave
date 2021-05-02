@@ -1,4 +1,4 @@
-import {useContext,createContext,useRef,useEffect} from 'react';
+import {useContext,createContext,useRef,useEffect,useState} from 'react';
 import {io} from 'socket.io-client'
 import { infoToast, successToast, warningToast } from '../UI/Toast/Toast';
 import {useAuth} from './AuthContext'
@@ -12,6 +12,7 @@ export const MessageContext=createContext()
 export const useMessage=()=>useContext(MessageContext)
 
 export const MessageContextProvider=({children})=>{
+    const [loading,setLoading]=useState(false)
     const {userId,token}=useAuth()
     const {push}=useHistory()
     const {dispatch:conclaveDispatch}=useConclave()
@@ -85,6 +86,7 @@ export const MessageContextProvider=({children})=>{
                 userId:userId
             })
         }else{
+            setLoading(true)
             try{
                 const {data}=await axios.get(`/api/messages/${conclave._id}`,config);
                 dispatch({
@@ -95,9 +97,11 @@ export const MessageContextProvider=({children})=>{
                     type:"ADD_MESSAGES_ACTION",
                     payload:{messages:[...data.data],users:[]}
                 })
+                setLoading(false)
             }catch(error){
                 console.log(error)
                 warningToast("Unable to fetch messages")
+                setLoading(false)
             }
         }
     }
@@ -168,6 +172,7 @@ export const MessageContextProvider=({children})=>{
     }
     
     const changeVisibility=async (visibility)=>{
+        setLoading(true)
         try{
             const {data}=await axios.put(`/api/conclaves/${state.currentConclave._id}/visibility`,{
                 visibility:visibility
@@ -177,9 +182,25 @@ export const MessageContextProvider=({children})=>{
                 payload:data.data
             })
             successToast('Visibility updated')
+            setLoading(false)
         }catch(error){
             console.log(error)
             warningToast("Unable to change visibility")
+            setLoading(false)
+        }
+    }
+
+    const addBookmark=async ()=>{
+        console.log("working")
+        setLoading(true)
+        try{
+            await axios.put(`/api/conclaves/${state.currentConclave._id}/users/${userId}`,null,config)
+            setLoading(false)
+            successToast("Conclave Bookmarked")
+        }catch(error){
+            console.log(error)
+            warningToast("Unable to add bookmark")
+            setLoading(false)
         }
     }
 
@@ -272,7 +293,7 @@ export const MessageContextProvider=({children})=>{
                 payload:true
             })
         }
-    },[state.currentConclave])
+    },[state.currentConclave,userId])
 
     return(
         <MessageContext.Provider value={{
@@ -291,7 +312,9 @@ export const MessageContextProvider=({children})=>{
             allowTalking:state.allowTalking,
             lowerHand:lowerHand,
             closeConclave:closeConclave,
-            changeVisibility:changeVisibility
+            changeVisibility:changeVisibility,
+            messageLoading:loading,
+            addBookmark:addBookmark
         }}>
             {children}
         </MessageContext.Provider>

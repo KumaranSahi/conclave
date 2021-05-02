@@ -54,10 +54,14 @@ code {
 }
 
 .MuiDrawer-paper{
-  width: 23rem;
+  width: 20rem;
   background: var(--secondary) !important;
 }
 
 .main-container{
   margin-top: 4.4rem;
+}
+
+a{
+  text-decoration: none;
 }

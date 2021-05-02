@@ -23,10 +23,12 @@ export const MessageContextProvider=({children})=>{
             Authorization: "Bearer " + token
         }
     }
-
-    const socket=useRef(io("wss://conclave-socket.herokuapp.com/",{
+    const socket=useRef(io(process.env["SOCKET"],{
         transports:[ "websocket","polling"],
     }))
+    // const socket=useRef(io("ws://localhost:8080",{
+    //         transports:[ "websocket","polling"],
+    //     }))
 
     const messageManipulation=(state,action)=>{
         switch (action.type) {
@@ -134,6 +136,10 @@ export const MessageContextProvider=({children})=>{
         dispatch({
             type:"REMOVE_CURRENT_CONCLAVE"
         })
+        dispatch({
+            type:"SET_ALLOW_TALKING",
+            payload:false
+        })
     }
 
     const raiseHand=()=>{
@@ -192,7 +198,6 @@ export const MessageContextProvider=({children})=>{
     }
 
     const addBookmark=async ()=>{
-        console.log("working")
         setLoading(true)
         try{
             await axios.put(`/api/conclaves/${state.currentConclave._id}/users/${userId}`,null,config)
@@ -203,6 +208,12 @@ export const MessageContextProvider=({children})=>{
             warningToast("Unable to add bookmark")
             setLoading(false)
         }
+    }
+
+    const muteClicked=async (userId)=>{
+        socket.current.emit("mute-user",{
+            userId:userId
+        })
     }
 
     useEffect(()=>{
@@ -270,11 +281,25 @@ export const MessageContextProvider=({children})=>{
     useEffect(()=>{
         socket.current.on("conclave-closed",({conclaves})=>{
             warningToast("Admin has Closed the conclave")
+            dispatch({
+                type:"SET_ALLOW_TALKING",
+                payload:false
+            })
             conclaveDispatch({
                 type:"LOAD_CONCLAVE_LIST",
                 payload:[...conclaves]
             })
             push("/")
+        })
+    },[socket])
+
+    useEffect(()=>{
+        socket.current.on("admin-muted-you",()=>{
+            warningToast("The Admin has muted you") 
+            dispatch({
+                type:"SET_ALLOW_TALKING",
+                payload:false
+            })
         })
     },[socket])
 
@@ -315,7 +340,8 @@ export const MessageContextProvider=({children})=>{
             closeConclave:closeConclave,
             changeVisibility:changeVisibility,
             messageLoading:loading,
-            addBookmark:addBookmark
+            addBookmark:addBookmark,
+            muteClicked:muteClicked
         }}>
             {children}
         </MessageContext.Provider>

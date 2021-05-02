@@ -25,6 +25,7 @@ const MainChatArea=({active})=>{
                             image={image}
                             primaryMessageUserName={name}
                             own={id===userId}
+                            userId={id}
                             primaryMessagecontent={content}
                             primaryMessageCreatedAt={createdAt}
                             secondaryMessageContent={responseOf.content}
@@ -38,6 +39,7 @@ const MainChatArea=({active})=>{
                                 id={_id}
                                 name={name}
                                 image={image}
+                                userId={id}
                                 own={id===userId}
                                 content={content}
                                 createdAt={createdAt}

@@ -4,3 +4,14 @@
     animation-name: fadeIn;
     animation-duration: 1500ms;
 }
+
+.conclave-title{
+    display: flex;
+    align-items: center;
+}
+
+.conclave-title h1{
+    font-weight: 300;
+    color: var(--primary);
+    letter-spacing: 0.1rem;
+}

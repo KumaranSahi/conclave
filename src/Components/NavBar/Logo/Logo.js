@@ -5,7 +5,10 @@ import Logo from '../../../Assets/conclave transparent.png'
 const logo=()=>{
     return(
         <Link to="/">
-            <img src={Logo} className={classes["logo"]} alt="logo"/>
+            <div className={classes['conclave-title']}>
+                <img src={Logo} className={classes["logo"]} alt="logo"/>
+                <h1>Conclave</h1>
+            </div>
         </Link>
     )
 }

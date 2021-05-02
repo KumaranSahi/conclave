@@ -4,11 +4,13 @@ import {format} from 'timeago.js'
 import {useState} from 'react'
 import {Menu,MenuItem} from '@material-ui/core'
 import {useMessage} from  '../../../../Store/MessageContext'
+import {useAuth} from '../../../../Store/AuthContext'
 
-const Message=({id,own,name,content,createdAt,image})=>{
+const Message=({id,userId:messageUserId,own,name,content,createdAt,image})=>{
     const [anchorEl, setAnchorEl] = useState(null);
 
-    const {dispatch}=useMessage()
+    const {dispatch,currentConclave,muteClicked}=useMessage()
+    const {userId}=useAuth()
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -51,6 +53,11 @@ const Message=({id,own,name,content,createdAt,image})=>{
                 onClose={handleClose}
             >
                 <MenuItem onClick={replyClicked}>Reply</MenuItem>
+                {userId===currentConclave?.admin&&
+                !own&&<MenuItem onClick={()=>{muteClicked(messageUserId)
+                handleClose()}}>
+                    Mute
+                </MenuItem>}
             </Menu>
         </>
     )

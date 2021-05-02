@@ -2,6 +2,7 @@ import {useContext,createContext,useRef,useEffect} from 'react';
 import {io} from 'socket.io-client'
 import { infoToast, successToast, warningToast } from '../UI/Toast/Toast';
 import {useAuth} from './AuthContext'
+import {useConclave} from './ConclaveContext'
 import {useHistory} from 'react-router-dom'
 import { useReducer } from 'react';
 import axios from 'axios'
@@ -13,6 +14,7 @@ export const useMessage=()=>useContext(MessageContext)
 export const MessageContextProvider=({children})=>{
     const {userId,token}=useAuth()
     const {push}=useHistory()
+    const {dispatch:conclaveDispatch}=useConclave()
 
     const config = {
         headers: {
@@ -160,7 +162,9 @@ export const MessageContextProvider=({children})=>{
     }
 
     const closeConclave=()=>{
-
+        socket.current.emit("close-conclave",{
+            conclaveId:state.currentConclave._id
+        })
     }
     
     const changeVisibility=async (visibility)=>{
@@ -238,6 +242,17 @@ export const MessageContextProvider=({children})=>{
                 type:"SET_ALLOW_TALKING",
                 payload:false
             })
+        })
+    },[socket])
+
+    useEffect(()=>{
+        socket.current.on("conclave-closed",({conclaves})=>{
+            warningToast("Admin has Closed the conclave")
+            conclaveDispatch({
+                type:"LOAD_CONCLAVE_LIST",
+                payload:[...conclaves]
+            })
+            push("/")
         })
     },[socket])
 

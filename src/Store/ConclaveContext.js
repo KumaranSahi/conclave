@@ -103,7 +103,8 @@ export const ConclaveContextProvider=({children})=>{
                 popularConclaves:getPopularConclaves(state.conclaves),
                 userCreatedConclaves:state.userCreatedConclaves,
                 loadUserCreatedConclaves:loadUserCreatedConclaves,
-                createConclave:createConclave
+                createConclave:createConclave,
+                dispatch:dispatch
             }}
         >
             {children}

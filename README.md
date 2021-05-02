@@ -23,6 +23,19 @@
 - Mongoose
 - PassportJS
 
+# Screenshots
+
+## Signin page
+![Sign in page](images/Signin%20screen.JPG)
+
+## Home Screen
+![Home Screen](images/Home%20screen.JPG)
+
+##My conclaves page
+![My conclave page](images/My%20Conclaves.JPG)
+
+##Chat window
+![Chat window](images/Chat%20window.JPG)
 
 ## API
 

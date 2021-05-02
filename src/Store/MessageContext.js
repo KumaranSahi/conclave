@@ -24,7 +24,7 @@ export const MessageContextProvider=({children})=>{
         }
     }
 
-    const socket=useRef(io("ws://conclave-socket.herokuapp.com/",{
+    const socket=useRef(io("wss://conclave-socket.herokuapp.com/",{
         transports:[ "websocket","polling"],
     }))
 

@@ -1,10 +1,14 @@
 import classes from './MessageInputArea.module.css'
 import {useMessage} from '../../../../Store/MessageContext';
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 
 const MessageInputArea=()=>{
-    const {sendMessage,replyMessage,dispatch,sendReply}=useMessage()
+    const {sendMessage,replyMessage,dispatch,sendReply,clearMessage}=useMessage()
     const [content,setContent]=useState("")
+
+    useEffect(()=>{
+        setContent("")
+    },[clearMessage])
 
     const sendClicked=()=>{
         if(content.length>0)

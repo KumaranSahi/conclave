@@ -14,6 +14,7 @@ export const useMessage=()=>useContext(MessageContext)
 
 export const MessageContextProvider=({children})=>{
     const [loading,setLoading]=useState(false)
+    const [clearMessage,setClearMessage]=useState(false)
     const {userId,token}=useAuth()
     const {push}=useHistory()
     const {dispatch:conclaveDispatch}=useConclave()
@@ -226,6 +227,7 @@ export const MessageContextProvider=({children})=>{
                     type:"ADD_MESSAGES_ACTION",
                     payload:{messages:[...messages],users:[...users]}
                 })
+                setClearMessage(state=>!state)
             }
         })
     },[socket])
@@ -341,7 +343,8 @@ export const MessageContextProvider=({children})=>{
             changeVisibility:changeVisibility,
             messageLoading:loading,
             addBookmark:addBookmark,
-            muteClicked:muteClicked
+            muteClicked:muteClicked,
+            clearMessage:clearMessage
         }}>
             {children}
         </MessageContext.Provider>

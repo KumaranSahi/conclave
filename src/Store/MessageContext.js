@@ -23,7 +23,7 @@ export const MessageContextProvider=({children})=>{
             Authorization: "Bearer " + token
         }
     }
-    const socket=useRef(io(process.env["SOCKET"],{
+    const socket=useRef(io("wss://conclave-socket.herokuapp.com/",{
         transports:[ "websocket","polling"],
     }))
     // const socket=useRef(io("ws://localhost:8080",{

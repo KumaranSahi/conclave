@@ -18,12 +18,13 @@ const Home=()=>{
             </h1>
             <ul className={classes["conclave-list"]}>
                 {
-                    activeConclaves.map(({_id,name,description})=>
+                    activeConclaves.map(({_id,name,description,image})=>
                     (<li key={_id}>
                         <ConclaveItem
                             name={name}
                             description={description}
                             id={_id}
+                            image={image}
                         />
                     </li>))
                 }

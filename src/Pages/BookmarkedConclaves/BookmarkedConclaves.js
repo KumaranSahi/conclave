@@ -18,7 +18,7 @@ const Bookmarked=()=>{
             </h1>
             <ul className={classes["conclave-list"]}>
                 {
-                    bookmarkedConclaves?.map(({_id,name,description,visibility,active})=>
+                    bookmarkedConclaves?.map(({_id,name,description,visibility,active,image})=>
                     (<li key={_id}>
                         <ConclaveItem
                             name={name}
@@ -27,6 +27,7 @@ const Bookmarked=()=>{
                             visibility={visibility}
                             bookmarked={true}
                             active={active}
+                            image={image}
                         />
                     </li>))
                 }

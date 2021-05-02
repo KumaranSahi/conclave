@@ -2,6 +2,7 @@ import {createContext,useContext,useEffect, useReducer,useState} from 'react'
 import {useAuth} from './AuthContext'
 import axios from 'axios'
 import {successToast, warningToast} from '../UI/Toast/Toast'
+import {useHistory} from 'react-router-dom'
 
 export const ConclaveContext=createContext();
 
@@ -10,6 +11,7 @@ export const useConclave=()=>useContext(ConclaveContext);
 export const ConclaveContextProvider=({children})=>{
     const [loading,setLoading]=useState(false)
     const {token,userId}=useAuth();
+    const {push}=useHistory()
 
     const config = {
         headers: {
@@ -78,14 +80,16 @@ export const ConclaveContextProvider=({children})=>{
         setLoading(true)
         try{
             if(token){
-                const {data:{data,ok}}=await axios.post(`/api/conclaves/${userId}`,body,config);
-                if(ok)
+                const {data:{data,currentConclave,ok}}=await axios.post(`/api/conclaves/${userId}`,body,config);
+                if(ok){
                     dispatch ({
                         type:"LOAD_CONCLAVE_LIST",
                         payload:[...state.conclaves,data]
                     })
+                    push({pathname:"/chat",search:currentConclave._id,state:currentConclave})
+                }
             }
-            setLoading(false)   
+            setLoading(false)
             successToast("Conclave created successfully")
         }catch(error){
             console.log(error)
@@ -133,7 +137,8 @@ export const ConclaveContextProvider=({children})=>{
                 createConclave:createConclave,
                 bookmarkedConclaves:state.bookmarkedConclaves,
                 loadBookmarkedConclaves:loadBookmarkedConclaves,
-                dispatch:dispatch
+                dispatch:dispatch,
+                setConclaveLoading:setLoading
             }}
         >
             {children}

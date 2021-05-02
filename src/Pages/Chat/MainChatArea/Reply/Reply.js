@@ -1,11 +1,11 @@
 import classes from './Reply.module.css'
-import janeDoe from '../../../../Assets/Jane Doe.jpg'
+import Default from '../../../../Assets/default.png'
 import {format} from 'timeago.js'
 import {useState} from 'react'
 import {Menu,MenuItem} from '@material-ui/core'
 import {useMessage} from  '../../../../Store/MessageContext'
 
-const Reply=({id,primaryMessageUserName,own,primaryMessagecontent,primaryMessageCreatedAt,secondaryMessageContent,secondaryMessageCreatedAt,secondaryMessageUserName})=>{
+const Reply=({id,image,primaryMessageUserName,own,primaryMessagecontent,primaryMessageCreatedAt,secondaryMessageContent,secondaryMessageCreatedAt,secondaryMessageUserName})=>{
     const [anchorEl, setAnchorEl] = useState(null);
 
     const {dispatch}=useMessage()
@@ -44,7 +44,7 @@ const Reply=({id,primaryMessageUserName,own,primaryMessagecontent,primaryMessage
                 </div>
                 <div className={classes["primary-message"]}>
                     {!own&&<img
-                        src={janeDoe}
+                        src={image?image:Default}
                         alt="profile"
                         className={classes["profile-picture"]}
                     />}

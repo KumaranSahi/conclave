@@ -1,11 +1,11 @@
 import classes from './Message.module.css'
-import janeDoe from '../../../../Assets/Jane Doe.jpg'
+import Default from '../../../../Assets/default.png'
 import {format} from 'timeago.js'
 import {useState} from 'react'
 import {Menu,MenuItem} from '@material-ui/core'
 import {useMessage} from  '../../../../Store/MessageContext'
 
-const Message=({id,own,name,content,createdAt})=>{
+const Message=({id,own,name,content,createdAt,image})=>{
     const [anchorEl, setAnchorEl] = useState(null);
 
     const {dispatch}=useMessage()
@@ -29,7 +29,7 @@ const Message=({id,own,name,content,createdAt})=>{
         <>
             <div className={own?`${classes["message"]} ${classes["own-message"]}`:classes["message"]} onClick={handleClick}>
                 {!own&&<img
-                    src={janeDoe}
+                    src={image?image:Default}
                     alt="profile"
                     className={classes["profile-picture"]}
                 />}

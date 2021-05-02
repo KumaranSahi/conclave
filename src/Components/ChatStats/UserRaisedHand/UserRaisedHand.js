@@ -1,14 +1,14 @@
 import classes from './UserRaisedHand.module.css'
-import JaneDoe from '../../../Assets/Jane Doe.jpg'
+import Default from '../../../Assets/default.png'
 import {useMessage} from '../../../Store/MessageContext'
 
-const UserRaisedHand=({name,id})=>{
+const UserRaisedHand=({name,id,image})=>{
     const {raisedHandResponse}=useMessage()
     return(
         <div className={classes["user-container"]}>
             <div className={classes["user"]}>
                 <img
-                    src={JaneDoe}
+                    src={image?image:Default}
                     alt="profile"
                     className={classes["profile-image"]}
                 />

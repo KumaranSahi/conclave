@@ -76,7 +76,7 @@ export const MessageContextProvider=({children})=>{
     }
 
     const joinConclave=async(conclave)=>{
-        if(conclave.active){
+        if(conclave?.active){
             dispatch({
                 type:"UPDATE_CURRENT_CONCLAVE",
                 payload:conclave

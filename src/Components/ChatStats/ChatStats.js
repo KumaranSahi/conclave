@@ -45,11 +45,12 @@ export const ChatStats=()=>{
                 </h3>
                 <ul className={classes["users-in-conclave"]}>
                     {
-                        raisedHandUsers.map(({name,_id})=>(
+                        raisedHandUsers.map(({name,_id,image})=>(
                             <li key={_id}>
                                 <UserRaisedHand
                                     name={name}
                                     id={_id}
+                                    image={image}
                                 />
                             </li>
                         ))
@@ -61,10 +62,11 @@ export const ChatStats=()=>{
                 Users On Conclave
             </h3>
             <ul className={classes["users-in-conclave"]}>
-                {users?.map(({name,_id})=>(
+                {users?.map(({name,_id,image})=>(
                 <li key={_id}>
                     <User
                         name={name}
+                        image={image}
                     />
                 </li>))
                 }

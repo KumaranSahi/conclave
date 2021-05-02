@@ -1,14 +1,14 @@
 import classes from './ConclaveItem.module.css'
-import janeDoe from '../../Assets/Jane Doe.jpg'
+import Default from '../../Assets/default.png'
 import {useHistory} from 'react-router-dom'
 
-export const ConclaveItem=({name,description,id,visibility,bookmarked,active,isAdmin})=>{
+export const ConclaveItem=({name,description,id,visibility,bookmarked,active,isAdmin,image})=>{
     const {push}=useHistory();
     return(
         <div className={classes["conclave-item"]}>
             <div className={classes["conclave-details"]}>
                 <img
-                    src={janeDoe}
+                    src={image?image:Default}
                     alt="Profile"
                     className={classes["conclave-image"]}
                 />

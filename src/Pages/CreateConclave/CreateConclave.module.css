@@ -69,6 +69,32 @@
     background-color: var(--primary);
 }
 
+.new-button {
+    display: inline-block;
+    padding: 1rem; 
+    cursor: pointer;
+    background-color: var(--secondary-mild);
+    font-size: 1rem;
+    color: white;
+}
+input[type="file"] {
+  position: absolute;
+  z-index: -1;
+  top: 0.5rem;
+  left: 0;
+  font-size: 1rem;
+  color: grey;
+}
+
+.button-wrap {
+  position: relative;
+}
+
+.file-upload-info{
+    margin-bottom: 1rem;
+    color: white;
+}
+
 @media (min-width:700px){
     .create-conclave-form{
         width: 70%;

@@ -17,11 +17,12 @@ const MainChatArea=({active})=>{
         <div className={classes["chat-area"]}>
             <div className={classes["message-area"]}>
                 {
-                    messages?.map(({_id,by:{_id:id,name},content,createdAt,responseOf})=>responseOf?
+                    messages?.map(({_id,by:{_id:id,name,image},content,createdAt,responseOf})=>responseOf?
                     (
                         <Reply
                             key={_id}
                             id={_id}
+                            image={image}
                             primaryMessageUserName={name}
                             own={id===userId}
                             primaryMessagecontent={content}
@@ -36,6 +37,7 @@ const MainChatArea=({active})=>{
                             <Message
                                 id={_id}
                                 name={name}
+                                image={image}
                                 own={id===userId}
                                 content={content}
                                 createdAt={createdAt}

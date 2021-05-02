@@ -20,7 +20,8 @@ export const AuthProvider=({children})=>{
                     userId:action.payload.userId,
                     token:action.payload.token,
                     userName:action.payload.userName,
-                    expiresIn:action.payload.expiresIn
+                    expiresIn:action.payload.expiresIn,
+                    userImage:action.payload.userImage
                 }
             case "SIGNOUT_USER":
                 return{
@@ -28,7 +29,8 @@ export const AuthProvider=({children})=>{
                     userId:null,
                     token:null,
                     userName:null,
-                    expiresIn:null
+                    expiresIn:null,
+                    userImage:null
                 }
             default:
                 return state;
@@ -40,6 +42,7 @@ export const AuthProvider=({children})=>{
         token:null,
         userName:null,
         expiresIn:null,
+        userImage:null
     })
 
     const [currentPage,setCurrentPage]=useState("SIGNIN_PAGE")
@@ -55,7 +58,7 @@ export const AuthProvider=({children})=>{
             }
             else{
                 if(+status===208){
-                    infoToast("User already exists in the pix ecosystem")
+                    infoToast("User already exists in the database")
                     infoToast("Please Try loging in")
                 }
                 else
@@ -85,6 +88,7 @@ export const AuthProvider=({children})=>{
                 localStorage.setItem("token",data.token);
                 localStorage.setItem("userId",data.userId);
                 localStorage.setItem("userName",data.userName);
+                data.image && localStorage.setItem("userImage",data.image)
                 const expiresIn=new Date(new Date().getTime()+3600000);
                 localStorage.setItem('expiresIn',expiresIn);
                 checkAuthTimeout(3600)
@@ -94,7 +98,8 @@ export const AuthProvider=({children})=>{
                         userId:data.userId,
                         token:data.token,
                         userName:data.userName,
-                        expiresIn:expiresIn
+                        expiresIn:expiresIn,
+                        userImage:data.image?data.image:null
                     }
                 })
                 successToast("User Logged in Successfully")
@@ -113,6 +118,7 @@ export const AuthProvider=({children})=>{
         localStorage.removeItem("userId");
         localStorage.removeItem("userName");
         localStorage.removeItem('expiresIn');
+        localStorage.removeItem('userImage')
         dispatch({
             type:"SIGNOUT_USER"
         })
@@ -129,6 +135,7 @@ export const AuthProvider=({children})=>{
         else{
             const userId=localStorage.getItem('userId');
             const userName=localStorage.getItem('userName')
+            const userImage=localStorage.getItem('userImage')
             checkAuthTimeout((expiresIn.getTime()-new Date().getTime())/1000)
             dispatch({
                 type:"SIGNIN_USER",
@@ -136,7 +143,8 @@ export const AuthProvider=({children})=>{
                     userId:userId,
                     token:token,
                     userName:userName,
-                    expiresIn:expiresIn
+                    expiresIn:expiresIn,
+                    userImage:userImage?userImage:null
                 }
             })
         }
@@ -168,6 +176,7 @@ export const AuthProvider=({children})=>{
                 userId:state.userId,
                 token:state.token,
                 userName:state.userName,
+                userImage:state.userImage,
                 expiresIn:state.expiresIn,
                 dispatch:dispatch,
                 signUpUser:signUpUser,
@@ -176,7 +185,8 @@ export const AuthProvider=({children})=>{
                 currentPage:currentPage,
                 changePassword:changePassword,
                 setCurrentPage:setCurrentPage,
-                authLoading:loading
+                authLoading:loading,
+                setAuthLoading:setLoading
             }}
         >
             {children}    

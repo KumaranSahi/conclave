@@ -2,18 +2,23 @@ import {useContext,createContext,useRef,useEffect} from 'react';
 import {io} from 'socket.io-client'
 import { infoToast, successToast, warningToast } from '../UI/Toast/Toast';
 import {useAuth} from './AuthContext'
-import {useConclave} from './ConclaveContext'
 import {useHistory} from 'react-router-dom'
 import { useReducer } from 'react';
+import axios from 'axios'
 
 export const MessageContext=createContext()
 
 export const useMessage=()=>useContext(MessageContext)
 
 export const MessageContextProvider=({children})=>{
-    const {userId}=useAuth()
-    const {conclaves}=useConclave()
+    const {userId,token}=useAuth()
     const {push}=useHistory()
+
+    const config = {
+        headers: {
+            Authorization: "Bearer " + token
+        }
+    }
 
     const socket=useRef(io("ws://localhost:8080",{
         transports:[ "websocket","polling"],
@@ -67,16 +72,32 @@ export const MessageContextProvider=({children})=>{
         }
     }
 
-    const joinConclave=(conclaveId)=>{
-        const conclave=conclaves.filter(({_id})=>_id===conclaveId)[0]
-        dispatch({
-            type:"UPDATE_CURRENT_CONCLAVE",
-            payload:conclave
-        })
-        socket.current.emit("join-conclave",{
-            conclaveId:conclaveId,
-            userId:userId
-        })
+    const joinConclave=async(conclave)=>{
+        if(conclave.active){
+            dispatch({
+                type:"UPDATE_CURRENT_CONCLAVE",
+                payload:conclave
+            })
+            socket.current.emit("join-conclave",{
+                conclaveId:conclave._id,
+                userId:userId
+            })
+        }else{
+            try{
+                const {data}=await axios.get(`/api/messages/${conclave._id}`,config);
+                dispatch({
+                    type:"UPDATE_CURRENT_CONCLAVE",
+                    payload:conclave
+                })
+                dispatch({
+                    type:"ADD_MESSAGES_ACTION",
+                    payload:{messages:[...data.data],users:[]}
+                })
+            }catch(error){
+                console.log(error)
+                warningToast("Unable to fetch messages")
+            }
+        }
     }
 
     const sendMessage=(content)=>{
@@ -136,6 +157,26 @@ export const MessageContextProvider=({children})=>{
             type:"SET_ALLOW_TALKING",
             payload:false
         })
+    }
+
+    const closeConclave=()=>{
+
+    }
+    
+    const changeVisibility=async (visibility)=>{
+        try{
+            const {data}=await axios.put(`/api/conclaves/${state.currentConclave._id}/visibility`,{
+                visibility:visibility
+            },config)
+            dispatch({
+                type:"UPDATE_CURRENT_CONCLAVE",
+                payload:data.data
+            })
+            successToast('Visibility updated')
+        }catch(error){
+            console.log(error)
+            warningToast("Unable to change visibility")
+        }
     }
 
     useEffect(()=>{
@@ -233,7 +274,9 @@ export const MessageContextProvider=({children})=>{
             raisedHandUsers:state.raisedHandUsers,
             raisedHandResponse:raisedHandResponse,
             allowTalking:state.allowTalking,
-            lowerHand:lowerHand
+            lowerHand:lowerHand,
+            closeConclave:closeConclave,
+            changeVisibility:changeVisibility
         }}>
             {children}
         </MessageContext.Provider>

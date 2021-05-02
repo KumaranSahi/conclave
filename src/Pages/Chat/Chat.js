@@ -4,14 +4,18 @@ import {ChatStats} from '../../Components'
 import {useLocation} from 'react-router-dom'
 import { useEffect } from 'react'
 import {useMessage} from '../../Store/MessageContext'
+import {useConclave} from '../../Store/ConclaveContext'
 
 const Chat=()=>{
     const {search}=useLocation()
-    const {joinConclave,leaveConclave}=useMessage()
+    const {conclaves}=useConclave()
+    const {joinConclave,leaveConclave}=useMessage()                                     
 
-    useEffect(()=>{
-        search && joinConclave(search.substring(1))
-    },[search])
+    const conclave=conclaves?.filter(({_id})=>_id.toString()===search.substring(1))[0]
+
+    useEffect(()=>{ 
+        search && joinConclave(conclave)
+    },[search,conclaves])
 
     useEffect(()=>{
         return ()=>leaveConclave()
@@ -20,7 +24,7 @@ const Chat=()=>{
     return(
             <div className={classes["chat-section"]}>
                 <div className={classes["main-chat-area"]}>
-                    <MainChatArea/>
+                    <MainChatArea active={conclave.active}/>
                 </div>
                 <div className={classes["chat-stats"]}>
                     <ChatStats/>

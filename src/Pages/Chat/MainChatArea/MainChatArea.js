@@ -6,7 +6,7 @@ import {useMessage} from '../../../Store/MessageContext'
 import {useAuth} from '../../../Store/AuthContext'
 import {createRef, useEffect} from 'react'
 
-const MainChatArea=()=>{
+const MainChatArea=({active})=>{
     const {messages,allowTalking}=useMessage()
     const {userId}=useAuth()
     const scrollRef=createRef()
@@ -36,7 +36,7 @@ const MainChatArea=()=>{
                             <Message
                                 id={_id}
                                 name={name}
-                                own={id==userId}
+                                own={id===userId}
                                 content={content}
                                 createdAt={createdAt}
                             />
@@ -44,7 +44,7 @@ const MainChatArea=()=>{
                     ))
                 }
             </div>
-            {allowTalking&&
+            {allowTalking && active &&
             <div className={classes["textbox"]}>
                 <MessageInputArea/>
             </div>}

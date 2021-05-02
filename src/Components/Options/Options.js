@@ -5,7 +5,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const ITEM_HEIGHT = 48;
 
-export const LongMenu=({options})=>{
+export const LongMenu=({options,changed})=>{
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -16,6 +16,11 @@ export const LongMenu=({options})=>{
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const itemSelected=()=>{
+    changed&&changed()
+    handleClose()
+  }
 
   return (
     <div>
@@ -41,7 +46,7 @@ export const LongMenu=({options})=>{
         }}
       >
         {options.map((option) => (
-          <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
+          <MenuItem key={option} onClick={itemSelected}>
             {option}
           </MenuItem>
         ))}

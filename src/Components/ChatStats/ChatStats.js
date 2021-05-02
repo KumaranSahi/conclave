@@ -6,10 +6,14 @@ import {useMessage} from '../../Store/MessageContext'
 import {useAuth} from '../../Store/AuthContext'
 
 export const ChatStats=()=>{
-    const {users,currentConclave,raiseHand,raisedHandUsers,allowTalking,lowerHand}=useMessage()
+    const {users,currentConclave,raiseHand,raisedHandUsers,allowTalking,lowerHand,closeConclave,changeVisibility}=useMessage()
     const {userId}=useAuth()
 
-    return(
+    const visiblityClicked=()=>{
+        currentConclave.visibility==="PUBLIC"?changeVisibility("PRIVATE"):changeVisibility("PUBLIC")
+    }
+
+    return currentConclave?.active?(
         <div className={classes["chat-stats"]}>
             <div className={classes["options-div"]}>
                 <h2>
@@ -25,13 +29,14 @@ export const ChatStats=()=>{
                 :(<button className={`${classes["button-solid"]} ${classes["button-success"]}`} onClick={()=>raiseHand()}>
                     Raise Hand
                 </button>)}
-            </div>:
-            <div className={classes["options-div"]}>
-                <button className={`${classes["button-solid"]} ${classes["button-failure"]}`}>
-                    Close Conclave
-                </button>
-                <LongMenu options={["Make Public"]}/>
-            </div>}
+                </div>:
+                <div className={classes["options-div"]}>
+                    <button className={`${classes["button-solid"]} ${classes["button-failure"]}`} onClick={()=>closeConclave()}>
+                        Close Conclave
+                    </button>
+                    <LongMenu options={currentConclave.visibility==="PUBLIC"?["Make Private"]:["Make Public"]} changed={visiblityClicked}/>
+                </div>
+            }
             {userId===currentConclave?.admin&&(<>
                 <hr/>
                 <h3>
@@ -63,6 +68,15 @@ export const ChatStats=()=>{
                 </li>))
                 }
             </ul>
+        </div>
+    ):(
+        <div className={classes["chat-stats"]}>
+            <div className={classes["options-div"]}>
+                <h2>
+                    {currentConclave?.name}
+                </h2>
+                {userId!==currentConclave?.admin&&<LongMenu options={["bookmark"]}/>}
+            </div>
         </div>
     )
 }

@@ -4,10 +4,15 @@ import MessageInputArea from './MessageInputArea/MessageInputArea'
 import Reply from './Reply/Reply'
 import {useMessage} from '../../../Store/MessageContext'
 import {useAuth} from '../../../Store/AuthContext'
+import {useRef,createRef, useEffect} from 'react'
 
 const MainChatArea=()=>{
     const {messages}=useMessage()
     const {userId}=useAuth()
+    const scrollRef=createRef()
+    useEffect(()=>{
+        scrollRef?.current?.scrollIntoView({behaviour:"smooth"})
+    },[messages])
     return(
         <div className={classes["chat-area"]}>
             <div className={classes["message-area"]}>
@@ -27,14 +32,16 @@ const MainChatArea=()=>{
                         />
                     )     
                     :(
-                        <Message
-                            key={_id}
-                            id={_id}
-                            name={name}
-                            own={id==userId}
-                            content={content}
-                            createdAt={createdAt}
-                        />
+                        <div ref={scrollRef}>
+                            <Message
+                                key={_id}
+                                id={_id}
+                                name={name}
+                                own={id==userId}
+                                content={content}
+                                createdAt={createdAt}
+                            />
+                        </div>
                     ))
                 }
             </div>

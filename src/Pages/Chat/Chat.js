@@ -7,11 +7,15 @@ import {useMessage} from '../../Store/MessageContext'
 
 const Chat=()=>{
     const {search}=useLocation()
-    const {joinConclave}=useMessage()
+    const {joinConclave,leaveConclave}=useMessage()
 
     useEffect(()=>{
         search && joinConclave(search.substring(1))
     },[search])
+
+    useEffect(()=>{
+        return ()=>leaveConclave()
+    },[])
 
     return(
             <div className={classes["chat-section"]}>

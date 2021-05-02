@@ -14,11 +14,15 @@ const Message=({id,own,name,content,createdAt})=>{
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => {
+    const replyClicked=()=>{
         dispatch({
             type:"ADD_REPLY_MESSAGE",
             payload:id
         })
+        handleClose()
+    }
+
+    const handleClose = () => {
         setAnchorEl(null);
     };
     return(
@@ -46,7 +50,7 @@ const Message=({id,own,name,content,createdAt})=>{
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleClose}>Reply</MenuItem>
+                <MenuItem onClick={replyClicked}>Reply</MenuItem>
             </Menu>
         </>
     )

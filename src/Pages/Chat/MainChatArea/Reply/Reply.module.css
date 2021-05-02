@@ -1,5 +1,6 @@
 .reply-message{
     display: flex;
+    width: 100%;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 }
@@ -24,6 +25,7 @@
     align-self: center;
     color: black;
     background-color: var(--reply-background);
+    width: 93%;
     padding: 0.5rem;
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;

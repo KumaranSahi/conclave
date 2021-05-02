@@ -29,6 +29,11 @@ export const MessageContextProvider=({children})=>{
                     ...state,
                     currentConclave:action.payload
                 })
+            case "REMOVE_CURRENT_CONCLAVE":
+                return({
+                    ...state,
+                    currentConclave:null
+                })
             case "ADD_REPLY_MESSAGE":
                 return({
                     ...state,
@@ -76,6 +81,15 @@ export const MessageContextProvider=({children})=>{
         })
     }
 
+    const leaveConclave=()=>{
+        socket.current.emit("leave-conclave",{
+            userId:userId
+        })
+        dispatch({
+            type:"REMOVE_CURRENT_CONCLAVE"
+        })
+    }
+
     useEffect(()=>{
         socket.current.on("room-joined",({ok,messages})=>{
             console.log(messages)
@@ -104,7 +118,8 @@ export const MessageContextProvider=({children})=>{
             sendMessage:sendMessage,
             dispatch:dispatch,
             replyMessage:state.replyMessage,
-            sendReply:sendReply
+            sendReply:sendReply,
+            leaveConclave:leaveConclave
         }}>
             {children}
         </MessageContext.Provider>

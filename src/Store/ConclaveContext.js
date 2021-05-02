@@ -1,6 +1,7 @@
 import {createContext,useContext,useEffect, useReducer,useState} from 'react'
 import {useAuth} from './AuthContext'
-import axios from 'axios'
+// import axios from 'axios'
+import axios from '../useAxioss'
 import {successToast, warningToast} from '../UI/Toast/Toast'
 import {useHistory} from 'react-router-dom'
 

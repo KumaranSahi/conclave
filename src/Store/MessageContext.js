@@ -5,7 +5,8 @@ import {useAuth} from './AuthContext'
 import {useConclave} from './ConclaveContext'
 import {useHistory} from 'react-router-dom'
 import { useReducer } from 'react';
-import axios from 'axios'
+// import axios from 'axios'
+import axios from '../useAxioss'
 
 export const MessageContext=createContext()
 
@@ -23,7 +24,7 @@ export const MessageContextProvider=({children})=>{
         }
     }
 
-    const socket=useRef(io("ws://localhost:8080",{
+    const socket=useRef(io("ws://conclave-socket.herokuapp.com/",{
         transports:[ "websocket","polling"],
     }))
 

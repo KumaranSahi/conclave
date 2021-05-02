@@ -3,7 +3,8 @@ import {useState} from 'react'
 import { warningToast } from '../../UI/Toast/Toast';
 import image from '../../Assets/NetworkBackground.jpg'
 import {useAuth} from '../../Store/AuthContext'
-import axios from 'axios'
+// import axios from 'axios'
+import axios from '../../useAxioss'
 
 const SignUp=()=>{
 
